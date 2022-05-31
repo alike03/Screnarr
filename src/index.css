@@ -3,12 +3,81 @@
 @tailwind utilities;
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-        Arial, sans-serif;
+	font-family: "Voces", cursive;
     margin: auto;
 	margin-left: 4rem;
-    max-width: 38rem;
     padding: 2rem;
 	user-select: none;
-	@apply bg-background
+	@apply bg-background;
+	@apply text-white;
+}
+
+/* from-highlight-dark to-background-dark  bg-gradient-to-br  */
+
+* {
+	@apply transition-all duration-500 ease-in-out;
+}
+
+h1 {
+	@apply text-4xl font-bold mb-5
+}
+
+/* Navigation */
+
+nav {
+	@apply fixed top-0 left-0 h-screen w-16 flex flex-col bg-background-dark text-white shadow-lg
+}
+
+nav .icon {
+	@apply bg-highlight-dark text-white hover:bg-highlight-light hover:text-background-dark  relative flex items-center justify-center h-12 w-12 mt-2 mb-2 mx-auto shadow-lg rounded-3xl hover:rounded-xl transition-all duration-300 ease-linear cursor-pointer
+}
+
+nav .tooltip {
+	@apply text-black bg-highlight-light  absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md text-xs font-bold transition-all duration-100 scale-0 origin-left
+}
+
+/* Settings */
+
+form {
+	@apply flex flex-wrap gap-5
+}
+
+fieldset {
+	@apply relative rounded-xl bg-background-dark border border-gray-900 p-6 shadow-xl min-w-fit flex-grow
+}
+
+legend {
+	@apply bg-background-dark font-semibold text-2xl text-gray-200 py-1 px-2 border border-gray-900 translate-y-2 shadow-xl
+}
+
+button, [type='button'], [type='reset'], [type='submit'] {
+	@apply bg-highlight-dark text-white hover:bg-highlight-light font-bold py-2 px-4 rounded-md shadow-xl
+}
+
+button.reset {
+	@apply absolute right-6 top-0
+}
+
+label {
+	@apply flex flex-col text-gray-500 font-bold mt-5;
+}
+
+label span {
+	@apply mb-2;
+}
+
+input {
+	@apply bg-gray-200 border-2 rounded py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:text-highlight focus:border-highlight;
+}
+
+label.check {
+	@apply items-center flex-row-reverse justify-end;
+}
+
+label.check span {
+	@apply mb-0 ml-1.5;
+}
+
+label input[type="checkbox"] {
+	@apply w-4 h-4 border border-gray-300 rounded bg-gray-50;
 }

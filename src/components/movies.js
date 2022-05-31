@@ -1,13 +1,19 @@
+import m from 'mithril'
+import store from '../components/settings'
 
+async function movies() {
+	const radarr = store.get('settings.radarr')
 
-const movies = () => {
-	let movies;
+	const url = `http${radarr.ssl ?'s':''}://${radarr.url}:${radarr.port}/api/v3/movie?apikey=${radarr.api}`
 
-	fetch('http://localhost:7878/api/v3/movie?apikey=')
-	.then(response => response.json())
-	.then(json => movies = json)
-	
-	return movies
+	try {
+		const response = await fetch(url)
+		const json = await response.json()
+		return json
+	} catch (error) {
+		alert('Error: Could not fetch movies from Radarr. \nAre you sure you have the correct settings?')
+		m.route.set('/settings')
+		return []
+	}
 }
-
 export default movies()

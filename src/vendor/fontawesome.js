@@ -38,6 +38,7 @@
 // // watch the DOM automatic for any additional icons being added or modified
 // // https://fontawesome.com/how-to-use/with-the-api/methods/dom-watch
 // dom.watch()
+//TODO: Cleanup
 
 import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
