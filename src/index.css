@@ -15,7 +15,7 @@ body {
 /* from-highlight-dark to-background-dark  bg-gradient-to-br  */
 
 * {
-	@apply transition-all duration-500 ease-in-out;
+	/* @apply transition-all duration-500 ease-in-out */
 }
 
 h1 {
@@ -36,6 +36,42 @@ nav .tooltip {
 	@apply text-black bg-highlight-light  absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md text-xs font-bold transition-all duration-100 scale-0 origin-left
 }
 
+/* Movies */
+
+section.movies {
+	@apply flex flex-wrap gap-7
+}
+
+section.movies .poster {
+	@apply w-48 break-words hover:text-highlight transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer
+}
+
+section.movies  .poster img {
+	@apply rounded-lg shadow-xl transition-shadow duration-300 ease-in-out
+}
+
+section.movies .poster:hover img {
+	@apply shadow-blue-600/10
+}
+
+section.movies .content {
+}
+
+section.movies .poster .content .title {
+	@apply text-lg font-bold transition-transform duration-300 ease-in-out -translate-y-3
+}
+
+section.movies .poster:hover .content .title {
+	@apply translate-y-0
+}
+section.movies .poster .content .details {
+	@apply text-xs mt-2 text-transparent transition-all duration-300 ease-in-out
+}
+
+section.movies .poster:hover .content .details {
+	@apply text-gray-600
+}
+
 /* Settings */
 
 form {
@@ -50,16 +86,12 @@ legend {
 	@apply bg-background-dark font-semibold text-2xl text-gray-200 py-1 px-2 border border-gray-900 translate-y-2 shadow-xl
 }
 
-button, [type='button'], [type='reset'], [type='submit'] {
-	@apply bg-highlight-dark text-white hover:bg-highlight-light font-bold py-2 px-4 rounded-md shadow-xl
-}
-
-button.reset {
-	@apply absolute right-6 top-0
-}
-
 label {
 	@apply flex flex-col text-gray-500 font-bold mt-5;
+}
+
+label * {
+	@apply transition-all duration-500 ease-in-out
 }
 
 label span {
@@ -80,4 +112,12 @@ label.check span {
 
 label input[type="checkbox"] {
 	@apply w-4 h-4 border border-gray-300 rounded bg-gray-50;
+}
+
+button, [type='button'], [type='reset'], [type='submit'] {
+	@apply bg-highlight-dark text-white hover:bg-highlight-light font-bold py-2 px-4 rounded-md shadow-xl
+}
+
+button.reset {
+	@apply absolute right-6 top-0
 }

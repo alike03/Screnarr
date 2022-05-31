@@ -6,10 +6,9 @@ import './index.css'
 import './vendor/fontawesome'
 
 // import settings from './components/settings'
-import movies from './components/movies'
 import Navbar from './components/navbar'
 
-import LayoutMovie from './layout/movies'
+import { movieFetch, LayoutMovie } from './layout/movies'
 import LayoutTv from './layout/tv'
 import LayoutSettings from './layout/settings'
 
@@ -20,22 +19,21 @@ const Layout = {
     }
 }
 
-LayoutMovie(movies).then(function(Movies) {
-	m.route(document.body, "/", {
-		"/": {
-			view: function() {
-				return m(Layout, m(Movies))
-			},
+m.route(document.body, "/", {
+	"/": {
+		oninit: movieFetch,
+		view: function() {
+			return m(Layout, m(LayoutMovie))
 		},
-		"/tv": {
-			view: function() {
-				return m(Layout, m(LayoutTv))
-			},
+	},
+	"/tv": {
+		view: function() {
+			return m(Layout, m(LayoutTv))
 		},
-		"/settings": {
-			view: function() {
-				return m(Layout, m(LayoutSettings))
-			},
+	},
+	"/settings": {
+		view: function() {
+			return m(Layout, m(LayoutSettings))
 		},
-	})
+	},
 })
