@@ -10,6 +10,7 @@ const store = new Store({
     clearInvalidConfig: true,
     // projectVersion: version,
     migrations: {},
+	// TODO: Migrate to schema
 	defaults: {
 		// window: {
 		// 	width: 800,
@@ -20,16 +21,20 @@ const store = new Store({
 		// },
 		settings: {
 			radarr: {
+				enabled: false,
+				ssl: false,
 				url: "localhost",
-				api: "",
 				port: 7878,
-				ssl: false
+				api: "",
+				connected: false,
 			},
 			sonarr: {
+				enabled: false,
+				ssl: false,
 				url: "localhost",
-				api: "",
 				port: 8989,
-				ssl: false
+				api: "",
+				connected: false,
 			},
 		},
 	}

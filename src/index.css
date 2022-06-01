@@ -29,7 +29,12 @@ nav {
 }
 
 nav .icon {
-	@apply bg-highlight-dark text-white hover:bg-highlight-light hover:text-background-dark  relative flex items-center justify-center h-12 w-12 mt-2 mb-2 mx-auto shadow-lg rounded-3xl hover:rounded-xl transition-all duration-300 ease-linear cursor-pointer
+	@apply bg-highlight-dark text-white relative flex items-center justify-center h-12 w-12 mt-2 mb-2 mx-auto shadow-lg rounded-3xl transition-all duration-300 ease-linear cursor-pointer
+}
+
+nav .icon:hover,
+nav .icon.active {
+	@apply bg-highlight-light text-background-dark rounded-xl
 }
 
 nav .tooltip {
@@ -103,15 +108,15 @@ input {
 }
 
 label.check {
-	@apply items-center flex-row-reverse justify-end;
+	@apply items-center flex-row-reverse justify-end
 }
 
 label.check span {
-	@apply mb-0 ml-1.5;
+	@apply mb-0 ml-1.5
 }
 
 label input[type="checkbox"] {
-	@apply w-4 h-4 border border-gray-300 rounded bg-gray-50;
+	@apply w-4 h-4 border border-gray-300 rounded bg-gray-50
 }
 
 button, [type='button'], [type='reset'], [type='submit'] {
@@ -119,5 +124,21 @@ button, [type='button'], [type='reset'], [type='submit'] {
 }
 
 button.reset {
-	@apply absolute right-6 top-0
+	@apply absolute right-6 top-2
+}
+
+.status {
+	@apply float-right inline-flex items-center mt-5
+}
+
+.status.success {
+	@apply text-green-700
+}
+
+.status.error {
+	@apply text-red-700
+}
+
+.status svg {
+	@apply mr-1.5
 }

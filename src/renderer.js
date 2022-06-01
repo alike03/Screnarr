@@ -19,8 +19,10 @@ const Layout = {
     }
 }
 
-m.route(document.body, "/", {
-	"/": {
+const defaultPath = store.get('settings.radarr.enabled') ? '/movie' : store.get('settings.sonarr.enabled') ? '/tv' : '/settings'
+
+m.route(document.body, defaultPath, {
+	"/movie": {
 		oninit: movieFetch,
 		view: function() {
 			return m(Layout, m(LayoutMovie))
