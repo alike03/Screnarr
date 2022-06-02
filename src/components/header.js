@@ -50,8 +50,9 @@ function Header() {
                         m('i', {
                             class: getWindowStateClassName(false),
                             oncreate: (obj) => {
-                                ipc.invoke('window-maximize').then((e, state) => obj.dom.className = getWindowStateClassName(state))
-                                ipc.on('window-fullscreen', (e, state) => obj.dom.className = getWindowStateClassName(state))
+								// TODO: Fix; doesn't work because of font awesome svg replacement
+                                // ipc.invoke('window-maximize').then((e, state) => obj.dom.className = getWindowStateClassName(state))
+                                //ipc.on('window-fullscreen', (e, state) => obj.dom.className = getWindowStateClassName(state))
                             }
                         })
                     ]),

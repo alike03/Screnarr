@@ -1,5 +1,6 @@
 const rules = require('./webpack.rules');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const path = require('path');
 
 rules.push({
     test: /\.css$/,
@@ -32,6 +33,12 @@ module.exports = {
 	experiments: {
 		// asyncWebAssembly: true,
 		// topLevelAwait: true
+	},
+	resolve: {
+		modules: [ 
+			path.resolve(__dirname, 'src'),
+			'node_modules'
+		],
 	},
     externals: [{
         // 'electron-config': 'electron-config',

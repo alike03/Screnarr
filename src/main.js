@@ -19,6 +19,8 @@ const createWindow = () => {
 		zoomToPageWidth: windowSettings.fullscreen,
         width: windowSettings.width,
         height: windowSettings.height,
+		minWidth: 800,
+		minHeight: 600,
 		webPreferences: {
 			preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
 			nodeIntegration: true,

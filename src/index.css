@@ -76,7 +76,7 @@ nav .tooltip {
 
 main {
 	grid-area: content;
-	@apply p-7 overflow-auto h-full
+	@apply relative p-7 overflow-auto h-full
 }
 
 main::-webkit-scrollbar {
@@ -99,6 +99,16 @@ main::-webkit-scrollbar-thumb:hover {
 	@apply bg-gray-500
 }
 
+/* Filter */
+
+section.filter {
+	@apply sticky top-0 z-10 flex gap-3 mb-8
+}
+
+section.filter button {
+	@apply shadow-md
+}
+
 /* Movies */
 
 section.movies {
@@ -106,7 +116,10 @@ section.movies {
 }
 
 section.movies .poster {
-	@apply w-48 break-words hover:text-highlight transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer
+	/* min-width: 150px;
+	max-width: 200px; */
+	width: 200px;
+	@apply break-words hover:text-highlight transition-all duration-300 ease-in-out hover:scale-105 cursor-pointer
 }
 
 section.movies  .poster img {
@@ -178,7 +191,7 @@ label input[type="checkbox"] {
 }
 
 button, [type='button'], [type='reset'], [type='submit'] {
-	@apply bg-highlight-dark text-white hover:bg-highlight-light font-bold py-2 px-4 rounded-md shadow-xl
+	@apply bg-highlight-dark text-white hover:bg-highlight-light font-bold py-2 px-4 rounded-md shadow-xl transition-all
 }
 
 button.reset {

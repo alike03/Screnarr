@@ -9,14 +9,14 @@ import './vendor/fontawesome'
 import Navbar from './components/navbar'
 import Header from './components/header'
 
-import { movieFetch, LayoutMovie } from './layout/movies'
+import LayoutMovie from './layout/movies/movies'
 import LayoutTv from './layout/tv'
 import LayoutSettings from './layout/settings'
 
 
 let Layout = {
     view: function(vnode) {
-        return [m(Header), m(Navbar), m('main', vnode.children)]
+        return [m(Header), m(Navbar), m('main', [...vnode.children])]
     }
 }
 
@@ -24,7 +24,6 @@ const defaultPath = store.get('settings.radarr.enabled') ? '/movie' : store.get(
 
 m.route(document.body, defaultPath, {
 	"/movie": {
-		oninit: movieFetch,
 		view: function() {
 			return m(Layout, m(LayoutMovie))
 		},
