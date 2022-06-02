@@ -4,12 +4,16 @@
 
 body {
 	font-family: "Voces", cursive;
-    margin: auto;
-	margin-left: 4rem;
-    padding: 2rem;
 	user-select: none;
-	@apply bg-background;
-	@apply text-white;
+	@apply bg-background text-white m-0 h-screen;
+
+	/* height: calc(100vh - 36px); */
+	display: grid;
+	grid-template-columns: 64px 1fr;
+	grid-template-rows: 36px calc(100vh - 36px);
+	grid-template-areas: 
+		"header header"
+		"nav content"; 
 }
 
 /* from-highlight-dark to-background-dark  bg-gradient-to-br  */
@@ -22,10 +26,37 @@ h1 {
 	@apply text-4xl font-bold mb-5
 }
 
+/* Titlebar */
+
+.title-bar {
+	grid-area: header;
+	z-index: 1000;
+	@apply flex items-center bg-background-dark
+}
+
+.title-bar .title {
+	-webkit-app-region: drag;
+	@apply text-white font-bold text-base m-0 ml-2.5 flex-grow
+}
+
+.title-bar .title-bar-btns {
+	@apply flex items-center h-full
+}
+
+.title-bar button {
+	@apply bg-background-dark hover:bg-gray-900 rounded-none p-0 h-full aspect-square
+}
+
+.title-bar button.close-btn {
+	@apply hover:bg-red-700
+}
+
 /* Navigation */
 
 nav {
-	@apply fixed top-0 left-0 h-screen w-16 flex flex-col bg-background-dark text-white shadow-lg
+	grid-area: nav;
+	z-index: 1000;
+	@apply flex flex-col bg-background-dark text-white shadow-lg
 }
 
 nav .icon {
@@ -39,6 +70,33 @@ nav .icon.active {
 
 nav .tooltip {
 	@apply text-black bg-highlight-light  absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md text-xs font-bold transition-all duration-100 scale-0 origin-left
+}
+
+/* Main Content */
+
+main {
+	grid-area: content;
+	@apply p-7 overflow-auto h-full
+}
+
+main::-webkit-scrollbar {
+	@apply w-4 bg-gray-900
+}
+
+main::-webkit-scrollbar-track {
+	@apply bg-transparent
+}
+
+main::-webkit-scrollbar-corner {
+	@apply bg-transparent
+}
+
+main::-webkit-scrollbar-thumb {
+	@apply bg-background border-solid border-4 border-transparent rounded-md bg-clip-content
+}
+
+main::-webkit-scrollbar-thumb:hover {
+	@apply bg-gray-500
 }
 
 /* Movies */

@@ -10,7 +10,8 @@ function getWindowSettings() {
 		x: 0,
 		y: 0,
 		width: 1000,
-		height: 800
+		height: 800,
+		fullscreen: false
 	})
 
 	if (window.x == 0) {
@@ -24,19 +25,22 @@ function getWindowSettings() {
 	return window
 }
 
-function setWindowSettings(type, bounds) {
+function setWindowSettings(type, args) {
 	switch (type) {
 		case 'moved':
-			store.set('window.x', bounds[0])
-			store.set('window.y', bounds[1])
+			store.set('window.x', args[0])
+			store.set('window.y', args[1])
 			break;
 	
+		case 'fullscreen':
+			store.set('window.fullscreen', args)
+			break;
 		default:
 			store.set('window', {
-				y: bounds.y,
-				x: bounds.x,
-				width: bounds.width,
-				height: bounds.height
+				y: args.y,
+				x: args.x,
+				width: args.width,
+				height: args.height
 			})
 			break;
 	}

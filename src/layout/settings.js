@@ -6,7 +6,7 @@ function Settings() {
 	return {
 		view: () => {
 			return m("section.settings", [
-				m("h1", "Settings"),
+				// m("h1", "Settings"),
 				m("form", [
 					m('fieldset', [
 						m("legend", "Radarr"),

@@ -1,6 +1,12 @@
 import m from 'mithril'
 import store from '../components/settings'
 
+export const titles = {
+	'movie': 'Movies',
+	'tv': 'TV',
+	'settings': 'Settings',
+}
+
 function loadTabs() {
 	const currentRoute = m.route.get()
 	let tabs = []
@@ -12,7 +18,7 @@ function loadTabs() {
 			key: 'movie'
 		}, [
 			m('i.navbar-item', { href: '/', class: 'fas fa-film' }),
-			m('span', { class: 'tooltip group-hover:scale-100' }, 'Movies'),
+			m('span', { class: 'tooltip group-hover:scale-100' }, titles.movie)
 		]))
 	}
 
@@ -23,7 +29,7 @@ function loadTabs() {
 			key: 'tv'
 		}, [
 			m('i.navbar-item', { href: '/', class: 'fas fa-tv' }),
-			m('span', { class: 'tooltip group-hover:scale-100' }, 'TV Shows')
+			m('span', { class: 'tooltip group-hover:scale-100' }, titles.tv)
 		]))
 	}
 	
@@ -33,7 +39,7 @@ function loadTabs() {
 		key: 'settings'
 	}, [
 		m('i.navbar-item', { href: '/', class: 'fas fa-cog' }),
-		m('span', { class: 'tooltip group-hover:scale-100' }, 'Settings')
+		m('span', { class: 'tooltip group-hover:scale-100' }, titles.settings)
 	]))
 
 	return tabs

@@ -25,7 +25,7 @@ export function movieFetch() {
 	}).catch(function(error) {
 		// alert('Error: Could not fetch movies from Radarr. \nAre you sure you have the correct settings?')
 		store.set('settings.radarr.connected', false)
-		m.route.set('/settings')
+		// m.route.set('/settings')
 		movies = []
 	})
 }

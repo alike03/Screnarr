@@ -1,4 +1,4 @@
-const { app, BrowserWindow, protocol } = require('electron')
+const { app, BrowserWindow, protocol, ipcMain } = require('electron')
 const { getWindowSettings, setWindowSettings } = require('./electron/settings')
 // const path = require('path')
 
@@ -16,6 +16,7 @@ const createWindow = () => {
 		title: 'Screnarr',
 		x: windowSettings.x,
 		y: windowSettings.y,
+		zoomToPageWidth: windowSettings.fullscreen,
         width: windowSettings.width,
         height: windowSettings.height,
 		webPreferences: {
@@ -23,13 +24,16 @@ const createWindow = () => {
 			nodeIntegration: true,
 			contextIsolation: false // TODO: Replace later
 		},
-		// frame: false,
+		frame: false,
 		backgroundColor: '#fff',
 		autoHideMenuBar: true,
     });
 
+	// if (windowSettings.fullscreen) mainWindow.setFullScreen(true)
 	mainWindow.on('resize', () => setWindowSettings('resize', mainWindow.getBounds()))
 	mainWindow.on('moved', () => setWindowSettings('moved', mainWindow.getPosition()))
+	mainWindow.on('maximize', () => setWindowState(true))
+	mainWindow.on('unmaximize', () => setWindowState(false))
 
     // and load the index.html of the app.
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
@@ -77,3 +81,35 @@ protocol.registerSchemesAsPrivileged([
 	    }
 	},
 ]);
+
+const setWindowState = (state) => {
+	const window = BrowserWindow.getFocusedWindow()
+	setWindowSettings('fullscreen', state)
+	window.webContents.send('window-fullscreen', state)
+}
+
+ipcMain.handle('window-maximize', (e, toggle) => {
+	const window = BrowserWindow.getFocusedWindow()
+	let currentState = window?.isMaximized()
+	if (currentState === undefined) return false
+
+	if (toggle) {
+		if (currentState) {
+			window.unmaximize()
+		} else {
+			window.maximize()
+		}
+		currentState = !currentState
+	}
+
+	return currentState
+})
+
+ipcMain.on('window-minimize', () => {
+	const window = BrowserWindow.getFocusedWindow()
+	window.minimize()
+})
+
+ipcMain.on('window-close', () => {
+	app.quit()
+})
