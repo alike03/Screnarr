@@ -32,7 +32,7 @@ function loadTabs() {
 			m('span', { class: 'tooltip group-hover:scale-100' }, titles.tv)
 		]))
 	}
-	
+
 	tabs.push(m(m.route.Link, {
 		href: "/settings",
 		class: 'icon group' + (currentRoute === '/settings' ? ' active' : ''),

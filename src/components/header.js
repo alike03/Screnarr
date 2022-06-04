@@ -14,15 +14,6 @@ function getWindowStateClassName(windowState) {
 
 function Header() {
 
-    // <div class="title-bar">
-    //     <div class="title">My Life For The Code</div>
-    //     <div class="title-bar-btns">
-    //         <button class="min-btn"></button>
-    //         <button class="max-btn"></button>
-    //         <button class="close-btn"></button>
-    //     </div>
-    // </div>
-
 	return {
 		view: () => {
             const currentPage = m.route.get().substring(1)

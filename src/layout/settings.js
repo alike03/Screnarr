@@ -1,4 +1,5 @@
 import m from 'mithril'
+import { resolve } from 'mithril/promise/promise'
 import store from '../components/settings'
 
 function Settings() {
@@ -8,6 +9,34 @@ function Settings() {
 			return m("section.settings", [
 				// m("h1", "Settings"),
 				m("form", [
+					m('fieldset', [
+						m("legend", "General"),
+						m('button.reset', {
+							type: "button",
+							onclick: () => { store.reset('settings.general') }
+						}, "Reset"),
+						m("label", [
+							m("span", "Youtube Review (one channel id per line)"),
+							m("textarea", {
+								value: store.get('settings.general.ytReview').join('\n'),
+								rows: store.get('settings.general.ytReview').length,
+								spellcheck: false,
+								oninput: (e) => {
+									const lines = e.target.value.split('\n')
+									store.set('settings.general.ytReview', lines)
+									// set hight of textarea to match content
+									e.target.setAttribute('rows', lines.length)
+								}
+							})
+						]),
+						m("label.check", [
+							m("span", "Open Reviews after unmonitoring"),
+							m("input[type=checkbox]", {
+								checked: store.get('settings.general.ytReviewOpen'),
+								onchange: (e) => store.set('settings.general.ytReviewOpen', e.target.checked)
+							})
+						])
+					]),
 					m('fieldset', [
 						m("legend", "Radarr"),
 						m('button.reset', {

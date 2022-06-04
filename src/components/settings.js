@@ -20,6 +20,9 @@ const store = new Store({
 		// 	maximized: false,
 		// },
 		settings: {
+			general: {
+				ytReview: [],
+			},
 			radarr: {
 				enabled: false,
 				ssl: false,
@@ -27,6 +30,7 @@ const store = new Store({
 				port: 7878,
 				api: "",
 				connected: false,
+				filter: '*',
 			},
 			sonarr: {
 				enabled: false,
@@ -35,6 +39,7 @@ const store = new Store({
 				port: 8989,
 				api: "",
 				connected: false,
+				filter: '*',
 			},
 		},
 	}
