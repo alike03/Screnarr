@@ -10,7 +10,7 @@ import Navbar from './components/navbar'
 import Header from './components/header'
 
 import LayoutMovie from './layout/movies/movies'
-import LayoutTv from './layout/tv'
+import LayoutTv from './layout/tv/tv'
 import LayoutSettings from './layout/settings'
 
 

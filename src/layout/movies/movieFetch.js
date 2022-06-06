@@ -1,7 +1,7 @@
-import m from 'mithril';
-import store from 'components/settings';
+import m from 'mithril'
+import store from 'components/settings'
 
-export let movies = [];
+export let movies = []
 
 export const filter = [{
 		name: 'All',
@@ -27,32 +27,49 @@ store.onDidChange('settings.radarr', () => {
 
 export function movieFetch() {
 	if (!store.get('settings.radarr.enabled'))
-		return false;
+		return false
 
-	const radarr = store.get('settings.radarr');
-	const url = `http${radarr.ssl ? 's' : ''}://${radarr.url}:${radarr.port}/api/v3/movie?apikey=${radarr.api}`;
+	const radarr = store.get('settings.radarr')
+	const url = `http${radarr.ssl ? 's' : ''}://${radarr.url}:${radarr.port}/api/v3/movie?apikey=${radarr.api}`
 
 	m.request({
 		method: 'GET',
 		url: url,
 	})
 		.then(function (items) {
-			// Sort by inCinemas
-			items.sort(((i, e) => {
-			    if (e.digitalRelease && !i.digitalRelease) return -1;
-			    if (!e.digitalRelease && i.digitalRelease) return 1;
-			    if (e.digitalRelease && i.digitalRelease) {
-			        if (e.digitalRelease < i.digitalRelease) return -1;
-			        if (e.digitalRelease > i.digitalRelease) return 1
-			    }
-			    if (e.inCinemas && !i.inCinemas) return -1;
-			    if (!e.inCinemas && i.inCinemas) return 1;
-			    if (e.inCinemas && i.inCinemas) {
-			        if (e.inCinemas < i.inCinemas) return -1;
-			        if (e.inCinemas > i.inCinemas) return 1
-			    }
+			items.sort(((e, i) => {
+				// if (e.inCinemas && !i.inCinemas) return -1
+				// if (!e.inCinemas && i.inCinemas) return 1
+
+				// if (i.physicalRelease && !e.physicalRelease) return -1
+				// if (!i.physicalRelease && e.physicalRelease) return 1
+
+				// if (i.digitalRelease && !e.digitalRelease) return -1
+				// if (!i.digitalRelease && e.digitalRelease) return 1
+
+				// if (e.inCinemas && i.inCinemas) {
+				// 	if (new Date(e.inCinemas) < new Date(i.inCinemas)) return -1
+				// 	if (new Date(e.inCinemas) > new Date(i.inCinemas)) return 1
+				// }
+
+				// if (i.digitalRelease && e.digitalRelease) {
+				// 	if (new Date(i.digitalRelease) < new Date(e.digitalRelease)) return -1
+				// 	if (new Date(i.digitalRelease) > new Date(e.digitalRelease)) return 1
+				// }
+				
+				// if (i.physicalRelease && e.physicalRelease) {
+				// 	if (new Date(i.physicalRelease) < new Date(e.physicalRelease)) return -1
+				// 	if (new Date(i.physicalRelease) > new Date(e.physicalRelease)) return 1
+				// }
+
+				const eDate = new Date(e.inCinemas || e.digitalRelease || e.physicalRelease)
+				const iDate = new Date(i.inCinemas || i.digitalRelease || i.physicalRelease)
+
+				if (eDate < iDate) return 1
+				if (eDate > iDate) return -1
+
 			    return 0
-			}));
+			}))
 
 
 			movies = items
@@ -62,5 +79,5 @@ export function movieFetch() {
 			store.set('settings.radarr.connected', false)
 			// m.route.set('/settings')
 			movies = []
-		});
+		})
 }

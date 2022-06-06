@@ -13,8 +13,18 @@ function Settings() {
 						m("legend", "General"),
 						m('button.reset', {
 							type: "button",
-							onclick: () => { store.reset('settings.general') }
+							onclick: () => store.reset('settings.general')
 						}, "Reset"),
+						m("label", [
+							m("span", "Date Language"),
+							m("select", {
+								value: store.get('settings.general.language'),
+								onchange: (e) => store.set('settings.general.language', e.target.value),
+							}, [
+								m("option", { value: "en" }, "English"),
+								m("option", { value: "de" }, "German")
+							])
+						]),
 						m("label", [
 							m("span", "Youtube Review (one channel id per line)"),
 							m("textarea", {

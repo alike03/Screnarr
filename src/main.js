@@ -41,8 +41,10 @@ const createWindow = () => {
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 	mainWindow.setMenu(null);
 
-    // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // Open the DevTools only if it is not a build (production)
+	if (!app.isPackaged) {
+    	mainWindow.webContents.openDevTools();
+	}
 };
 
 // This method will be called when Electron has finished

@@ -140,89 +140,132 @@ section.filter input.search.active {
 	@apply grow opacity-100
 }
 
-/* Movies */
+/* Posters */
 
-section.movies {
+section {
 	@apply flex flex-wrap gap-7
 }
 
-section.movies .poster {
+section .poster {
 	@apply break-words w-48 hover:text-highlight transition-all duration-300 hover:scale-105 cursor-pointer opacity-0;
 	transition-property: text-shadow, box-shadow, transform;
 }
 
-section.movies .poster img {
-	@apply rounded-lg shadow-xl transition-shadow duration-300
+section .poster img {
+	@apply rounded-lg shadow-xl transition-shadow duration-300 w-full
 }
 
-section.movies .poster:hover img {
+section .poster:hover img {
 	@apply shadow-blue-600/10
 }
 
-section.movies .content {
+section .content {
 }
 
-section.movies .poster .content .title {
+section .poster .content .title {
 	@apply text-lg font-bold transition-transform duration-300 -translate-y-3
 }
 
-section.movies .poster:hover .content .title {
+section .poster:hover .content .title {
 	@apply translate-y-0
 }
-section.movies .poster .content .details {
+section .poster .content .details {
 	@apply text-xs mt-2 text-transparent transition-all duration-300
 }
 
-section.movies .poster:hover .content .details {
+section .poster:hover .content .details {
 	@apply text-gray-600
 }
 
-section.movies .poster:hover .context {
+section .poster:hover .context {
 	@apply opacity-100 pointer-events-auto
+}
+
+/* Movies */
+
+/* Series */
+
+section.tv .poster.active.hide {
+	transition-duration: 0s;
+	animation: fadeOut ease-out 400ms forwards !important
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1
+	}
+	to {
+		opacity: 0
+	}
+}
+
+/* section.tv .poster.active {
+	@apply absolute top-0 left-0 w-full h-full
+} */
+
+section.active {
+	@apply  z-10 fixed h-full w-full -m-7 p-7
+}
+
+section.active .cover {
+	@apply rounded-lg shadow-xl transition-all ease-out
+}
+
+section.active.hidden {
+	transition-duration: 0s;
+	@apply block opacity-0 pointer-events-none
+}
+
+section.active.showing {
+	@apply opacity-100
+}
+
+section.active.showing .content {
+	@apply transition-all duration-1000
 }
 
 /* Context Buttons */
 
-section.movies .poster .context {
+section .poster .context {
 	@apply opacity-0 transition-all duration-300 pointer-events-none;
 	/* DEBUG */
 	/* opacity: 1; */
 }
 
-section.movies .poster .context button {
+section .poster .context button {
 	@apply text-opacity-50 hover:text-opacity-100 transition-colors duration-300
 }
 
-section.movies .poster .context .monitored {
+section .poster .context .monitored {
 	@apply bg-transparent absolute -top-2 right-2 p-0 text-3xl
 }
 
-section.movies .poster .context .buttons {
+section .poster .context .buttons {
 	aspect-ratio: 0.67;
 	font-size: 1.2rem;
     line-height: 1.2rem;
 	@apply flex flex-col justify-center items-end gap-2 absolute top-0 right-0 left-0
 }
 
-section.movies .poster .context .buttons button {
+section .poster .context .buttons button {
 	border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
 	@apply relative p-1 flex translate-x-1 rounded-l-none shadow-md;
 	--tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
 }
 
-section.movies .poster .context .buttons svg {
+section .poster .context .buttons svg {
 	@apply w-5 h-5 box-content
 }
 
-section.movies .poster .context .buttons span {
+section .poster .context .buttons span {
 	font-size: .8rem;
     line-height: 1.8rem;
 	@apply text-white px-2 transition-all duration-300 absolute top-0 right-8 origin-right w-auto h-full min-w-max opacity-0 scale-x-0 bg-highlight-light backdrop-blur-sm;
 	--tw-bg-opacity: .3;
 }
 
-section.movies .poster .context .buttons button:hover span {
+section .poster .context .buttons button:hover span {
 	@apply opacity-100 scale-x-100
 }
 

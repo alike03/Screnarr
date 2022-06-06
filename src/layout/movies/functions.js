@@ -1,4 +1,3 @@
-import waitForElement from '../../components/waitForElement';
 
 export function getMovieState(movie) {
 	let state = []
@@ -51,21 +50,5 @@ export function searchMovie(title) {
 			m.classList.add('hidden')
 			m.classList.remove('fadeIn')
 		}
-	});
-}
-
-export function calculatePosterWidth(area, boot) {
-	const maxWidth = area.scrollWidth;
-	const columnCount = Math.floor(maxWidth / 200);
-	const gap = (columnCount - 1) * 28;
-	const posterWidth = (maxWidth - gap) / columnCount;
-
-	waitForElement('section.movies .poster').then(() => {
-		document.querySelectorAll('section.movies .poster').forEach((poster) => {
-			poster.style.width = `${posterWidth}px`;
-
-			// Set transition property afterwards fo the initial width
-			if (boot) setTimeout(() => poster.style.transitionProperty = 'all', 100);
-		});
 	});
 }

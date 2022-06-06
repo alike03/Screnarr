@@ -21,6 +21,7 @@ const store = new Store({
 		// },
 		settings: {
 			general: {
+				language: "en",
 				ytReview: [],
 			},
 			radarr: {

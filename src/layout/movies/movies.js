@@ -4,11 +4,11 @@ import fs from 'fs'
 import m from 'mithril'
 
 import waitForElement from '../../components/waitForElement'
-import { calculatePosterWidth, filterMovies, searchMovie, getMovieState } from './functions'
+import { calculatePosterWidth, getPoster } from "../../components/posterFunctions"
+import { filterMovies, searchMovie, getMovieState } from './functions'
 import { getMovieContext } from './getMovieContext'
 import { getMovieDetails } from './getMovieDetails'
 import { filter, movieFetch, movies } from './movieFetch'
-
 
 export default function LayoutMovie() {
     const radarr = store.get('settings.radarr')
@@ -71,11 +71,9 @@ export default function LayoutMovie() {
                 m("section.movies", {
                     class: 'flex flex-wrap'
                 }, movies.map(function(movie) {
+					console.log(movie)
                     // Skip if the movie is not yet available
                     if (!movie.isAvailable) return;
-
-                    const details = getMovieDetails(movie)
-                    const context = getMovieContext(movie)
 
                     return m("div.poster", {
                         class: getMovieState(movie).join(' '),
@@ -104,21 +102,17 @@ export default function LayoutMovie() {
                                     alert('No video file found for this movie.')
                                 }
                             } else {
-                                // console.log(movie)
-                                // shell.openExternal(`http${radarr.ssl ?'s':''}://${radarr.url}:${radarr.port}/movie/${movie.titleSlug}`)
+                                shell.openExternal(`http${radarr.ssl ?'s':''}://${radarr.url}:${radarr.port}/movie/${movie.titleSlug}`)
                             }
-                            // Else, open the movie in the browser
                         }
                     }, [
                         m("img", {
-                            remote: movie.images[0].remoteUrl,
-                            local: "file:///C:/ProgramData/Radarr" + movie.images[0].url,
-                            src: `http${radarr.ssl ?'s':''}://${radarr.url}:${radarr.port}/api/v3/mediacover/${movie.id}/poster-500.jpg?apikey=${radarr.api}`
+							src: getPoster(movie, radarr, 'radarr'),
                         }),
                         m("div.content ", [
-                            m("p.details", details.join(' · ')),
+                            m("p.details", getMovieDetails(movie).join(' · ')),
                             m("p.title", movie.title),
-                            m("div.context", context)
+                            m("div.context", getMovieContext(movie))
                         ])
                     ])
                 }))
