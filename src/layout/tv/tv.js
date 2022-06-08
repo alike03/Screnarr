@@ -9,26 +9,13 @@ import { filterMovies, searchMovie, getMovieState } from '../movies/functions'
 import { getMovieContext } from '../movies/getMovieContext'
 import { filter, tv, tvFetch } from './tvFetch'
 import { getTvDetails } from './getTvDetails'
-import { mainModule } from 'process'
+import { sectionActive, setDisplayingSeries, coverClickTransition, seriesContainer } from './sectionActive'
 
 export default function LayoutTv() {
     const sonarr = store.get('settings.sonarr')
-	let displayingSeries = null
 
     return {
         oninit: tvFetch,
-        oncreate: (vnode) => {
-            document.addEventListener('keydown', (e) => {
-				if (e.key === 'Escape') {
-					displayingSeries = null
-					document.querySelector('.poster.active')?.classList?.remove('hide')
-					document.querySelector('.poster.active')?.classList?.remove('active')
-					m.redraw()
-				} else {
-                	vnode.dom.querySelector('input').focus()
-				}
-            })
-        },
         view: () => {
             return [/*m("section.filter", [
                     filter.map(function(f) {
@@ -81,49 +68,7 @@ export default function LayoutTv() {
                     })
                 ]),
 				*/
-				m("section.active", {
-				    class: displayingSeries ? 'showing' : 'hidden'
-				}, [
-					m("img.cover", {
-						src: (displayingSeries ? getPoster(displayingSeries, sonarr, 'sonarr') : 'blank'),
-						style: { transform: 'translate(0, 0)' },
-						onupdate: (vnode) => {
-							const sourceParent = document.querySelector('.poster.active')
-							const sourceImg = sourceParent.querySelector('img')
-							const rect = sourceImg.getBoundingClientRect()
-
-							vnode.dom.style.width = sourceImg.width + 'px'
-							vnode.dom.style.height = sourceImg.height + 'px'
-
-							vnode.dom.style.transitionDuration = '0s'
-							// vnode.dom.style.left = rect.left - document.querySelector('nav').clientWidth + 'px'
-							// vnode.dom.style.top = rect.top + document.querySelector('main').scrollTop - document.querySelector('header').clientHeight + 'px'
-							// vnode.dom.style.transform = 'translate(' + (rect.left - 28 - document.querySelector('nav').clientWidth) + 'px, ' + (rect.top + document.querySelector('main').scrollTop - document.querySelector('header').clientHeight) + 'px)'
-							vnode.dom.style.transform = 'translate(' + 
-								// (rect.left - 24 - document.querySelector('nav').clientWidth) + 'px, ' + 
-								// (rect.top  - 18 - document.querySelector('header').clientHeight) + 'px)'
-								(rect.left - 28 - document.querySelector('nav').clientWidth) + 'px, ' + 
-								(rect.top  - 28 - document.querySelector('header').clientHeight) + 'px)'
-
-							setTimeout(() => {
-								// Starting animation imidiately causes the image to flicker
-								sourceParent.classList.add('hide')
-							}, 100)
-							setTimeout(() => {
-								vnode.dom.style.transitionDuration = '1s'
-								vnode.dom.style.transform = 'translate(50px, 50px)'
-							}, 500)
-						}
-					}),
-					displayingSeries ? 
-						m("div.content ", {
-						}, [
-							// m("p.details", getTvDetails(series).join(' · ')),
-							m("p.title", displayingSeries.title),
-							// m("div.context", getMovieContext(series))
-						])
-					: null
-				]),
+				sectionActive(),
                 m("section.tv", {
                     class: 'flex flex-wrap'
                 }, tv.map(function(series) {
@@ -140,7 +85,7 @@ export default function LayoutTv() {
 
                             if (e.button === 0) {
 								e.target.closest('.poster').classList.add('active')
-								displayingSeries = series
+								setDisplayingSeries(series)
                             } else {
                                 shell.openExternal(`http${sonarr.ssl ?'s':''}://${sonarr.url}:${sonarr.port}/movie/${movie.titleSlug}`)
                             }

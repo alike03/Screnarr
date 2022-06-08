@@ -71,7 +71,6 @@ export default function LayoutMovie() {
                 m("section.movies", {
                     class: 'flex flex-wrap'
                 }, movies.map(function(movie) {
-					console.log(movie)
                     // Skip if the movie is not yet available
                     if (!movie.isAvailable) return;
 
@@ -82,25 +81,31 @@ export default function LayoutMovie() {
 
                             // If left click, open the movie in Radarr
                             if (e.button === 0) {
-                                let fileFound = false
+                                // let fileFound = false
 
-                                try {
-                                    fs.readdirSync(movie.path).every(file => {
-                                        // If file type is video, open it
-                                        if (file.match(/\.(mkv|mp4|avi|mov|m4v|webm)$/i)) {
-                                            shell.openPath(movie.path + '/' + file)
-                                            fileFound = true
-                                            return false
-                                        }
-                                        return true
-                                    })
-                                } catch (e) {
-                                    console.warn(e)
-                                }
+                                // try {
+                                //     fs.readdirSync(movie.path).every(file => {
+                                //         // If file type is video, open it
+                                //         if (file.match(/\.(mkv|mp4|avi|mov|m4v|webm)$/i)) {
+                                //             shell.openPath(movie.path + '/' + file)
+                                //             fileFound = true
+                                //             return false
+                                //         }
+                                //         return true
+                                //     })
+                                // } catch (e) {
+                                //     console.warn(e)
+                                // }
 
-                                if (!fileFound) {
-                                    alert('No video file found for this movie.')
-                                }
+                                // if (!fileFound) {
+                                //     alert('No video file found for this movie.')
+                                // }
+
+                                if (movie.hasFile) {
+                                    shell.openPath(movie.movieFile.path)
+                                } else {
+									alert(movie.title + ' has no file')
+								}
                             } else {
                                 shell.openExternal(`http${radarr.ssl ?'s':''}://${radarr.url}:${radarr.port}/movie/${movie.titleSlug}`)
                             }

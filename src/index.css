@@ -204,25 +204,48 @@ section.tv .poster.active.hide {
 } */
 
 section.active {
-	@apply  z-10 fixed h-full w-full -m-7 p-7
+	@apply  z-10 fixed h-full w-full -m-7
 }
 
 section.active .cover {
-	@apply rounded-lg shadow-xl transition-all ease-out
+	@apply rounded-lg shadow-xl transition-all ease-out z-10
 }
 
 section.active.hidden {
 	transition-duration: 0s;
-	@apply block opacity-0 pointer-events-none
+	@apply opacity-0 pointer-events-none
 }
 
-section.active.showing {
+section.active {
+}
+
+section.active .cover.placed + .content {
 	@apply opacity-100
 }
 
-section.active.showing .content {
-	@apply transition-all duration-1000
+section.active .content {
+	@apply transition-all duration-1000 p-10 absolute w-full h-full opacity-0 bg-background;
 }
+
+/* BLUR COVER IMAGES INSTEAD OF FANART
+section.active .cover.placed + .content {
+	@apply opacity-100 bg-black;
+	--tw-bg-opacity: .3
+}
+
+section.active .content {
+	@apply transition-all duration-1000 p-10 absolute w-full h-full opacity-0 backdrop-blur-3xl;
+	--tw-backdrop-blur: blur(100px);
+} */
+
+section.active img.fanart {
+	@apply absolute top-0 left-0 w-full h-full object-cover blur-lg opacity-30 pointer-events-none
+}
+
+section.active .content .title {
+	@apply text-2xl font-bold mb-3
+}
+
 
 /* Context Buttons */
 
@@ -325,6 +348,10 @@ button:hover, button.active, [type='button']:hover, [type='button'].active, [typ
 
 button.reset {
 	@apply absolute right-6 top-2
+}
+
+select {
+	@apply block p-2 pr-8 bg-gray-700 placeholder-gray-400 text-white focus:outline-none focus:border-highlight
 }
 
 .status {

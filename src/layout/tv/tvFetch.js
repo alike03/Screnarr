@@ -30,7 +30,6 @@ export function tvFetch() {
 
     const sonarr = store.get('settings.sonarr')
     const url = `http${sonarr.ssl ? 's' : ''}://${sonarr.url}:${sonarr.port}/api/v3/series?apikey=${sonarr.api}`
-	console.log(url)
 
     m.request({
             method: 'GET',
