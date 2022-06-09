@@ -11,6 +11,7 @@ import Header from './components/header'
 
 import LayoutMovie from './layout/movies/movies'
 import LayoutTv from './layout/tv/tv'
+import LayoutSeries from './layout/tv/series'
 import LayoutSettings from './layout/settings'
 
 
@@ -32,6 +33,11 @@ m.route(document.body, defaultPath, {
 		view: function() {
 			return m(Layout, m(LayoutTv))
 		},
+	},
+	"/tv/:id": {
+		view: function(vnode) {
+			LayoutSeries(vnode.attrs.id)
+		}
 	},
 	"/settings": {
 		view: function() {

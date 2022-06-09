@@ -204,7 +204,7 @@ section.tv .poster.active.hide {
 } */
 
 section.active {
-	@apply  z-10 fixed h-full w-full -m-7
+	@apply  z-10 fixed top-9 left-16 bottom-0 right-0
 }
 
 section.active .cover {
@@ -219,12 +219,28 @@ section.active.hidden {
 section.active {
 }
 
-section.active .cover.placed + .content {
+section.active .fade {
+	@apply transition-all duration-1000 opacity-0
+}
+
+section.active.placed .fade {
 	@apply opacity-100
 }
 
-section.active .content {
-	@apply transition-all duration-1000 p-10 absolute w-full h-full opacity-0 bg-background;
+section.active .infos {
+	@apply flex flex-col p-14
+}
+
+section.active .infos .details {
+	@apply flex flex-col
+}
+
+section.active .infos .details > * {
+	@apply mt-4
+}
+
+section.active .episodes {
+	@apply flex flex-col p-14 pl-0
 }
 
 /* BLUR COVER IMAGES INSTEAD OF FANART
@@ -238,8 +254,12 @@ section.active .content {
 	--tw-backdrop-blur: blur(100px);
 } */
 
-section.active img.fanart {
-	@apply absolute top-0 left-0 w-full h-full object-cover blur-lg opacity-30 pointer-events-none
+section.active .fanart {
+	@apply absolute top-0 left-0 w-full h-full bg-background pointer-events-none -z-10
+}
+
+section.active .fanart img {
+	@apply object-cover opacity-30 w-full h-full  blur-lg
 }
 
 section.active .content .title {

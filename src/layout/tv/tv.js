@@ -9,7 +9,7 @@ import { filterMovies, searchMovie, getMovieState } from '../movies/functions'
 import { getMovieContext } from '../movies/getMovieContext'
 import { filter, tv, tvFetch } from './tvFetch'
 import { getTvDetails } from './getTvDetails'
-import { sectionActive, setDisplayingSeries, coverClickTransition, seriesContainer } from './sectionActive'
+import { sectionActive } from './sectionActive'
 
 export default function LayoutTv() {
     const sonarr = store.get('settings.sonarr')
@@ -68,7 +68,7 @@ export default function LayoutTv() {
                     })
                 ]),
 				*/
-				sectionActive(),
+				m("section.active.hidden"),
                 m("section.tv", {
                     class: 'flex flex-wrap'
                 }, tv.map(function(series) {
@@ -85,7 +85,10 @@ export default function LayoutTv() {
 
                             if (e.button === 0) {
 								e.target.closest('.poster').classList.add('active')
-								setDisplayingSeries(series)
+
+								const section = document.querySelector('section.active')
+								section.classList.remove('hidden')
+								m.mount(section, sectionActive(series, section))
                             } else {
                                 shell.openExternal(`http${sonarr.ssl ?'s':''}://${sonarr.url}:${sonarr.port}/movie/${movie.titleSlug}`)
                             }
