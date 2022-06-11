@@ -17,7 +17,7 @@ export default function LayoutTv() {
     return {
         oninit: tvFetch,
         view: () => {
-            return [/*m("section.filter", [
+            return [m("section.filter", [
                     filter.map(function(f) {
                         return m("button", {
                             'data-filter': f.filter,
@@ -54,7 +54,8 @@ export default function LayoutTv() {
                             if (e.keyCode === 27) {
                                 e.target.value = ''
                                 e.target.classList.remove('active')
-                                searchMovie(e.target.value)
+								//TODO: Filter TV
+                                // searchMovie(e.target.value)
                             }
                         },
                         oninput: (e) => {
@@ -63,17 +64,15 @@ export default function LayoutTv() {
                             } else {
                                 e.target.classList.remove('active')
                             }
-                            searchMovie(e.target.value)
+							//TODO: Filter TV
+							// searchMovie(e.target.value)
                         }
                     })
                 ]),
-				*/
 				m("section.active.hidden"),
                 m("section.tv", {
                     class: 'flex flex-wrap'
                 }, tv.map(function(series) {
-					
-					// console.log(series)
 
                     return m("div.poster", {
 						// TODO: Filter - get series state as class
@@ -89,14 +88,17 @@ export default function LayoutTv() {
 								const section = document.querySelector('section.active')
 								section.classList.remove('hidden')
 								m.mount(section, sectionActive(series, section))
+								
+								const url = new URL(window.location);
+								url.searchParams.set('series', series.id);
+								window.history.pushState({}, '', url);
                             } else {
-                                shell.openExternal(`http${sonarr.ssl ?'s':''}://${sonarr.url}:${sonarr.port}/movie/${movie.titleSlug}`)
+                                shell.openExternal(`http${sonarr.ssl ?'s':''}://${sonarr.url}:${sonarr.port}/series/${series.titleSlug}`)
                             }
                         }
                     }, [
                         m("img", {
 							src: getPoster(series, sonarr, 'sonarr'),
-
                         }),
                         m("div.content ", [
                             m("p.details", getTvDetails(series).join(' · ')),

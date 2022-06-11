@@ -101,23 +101,23 @@ main {
 	@apply relative p-7 overflow-auto h-full
 }
 
-main::-webkit-scrollbar {
+::-webkit-scrollbar {
 	@apply w-4 bg-gray-900
 }
 
-main::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
 	@apply bg-transparent
 }
 
-main::-webkit-scrollbar-corner {
+::-webkit-scrollbar-corner {
 	@apply bg-transparent
 }
 
-main::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
 	@apply bg-background border-solid border-4 border-transparent rounded-md bg-clip-content
 }
 
-main::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
 	@apply bg-gray-500
 }
 
@@ -199,12 +199,16 @@ section.tv .poster.active.hide {
 	}
 }
 
-/* section.tv .poster.active {
-	@apply absolute top-0 left-0 w-full h-full
-} */
-
 section.active {
 	@apply  z-10 fixed top-9 left-16 bottom-0 right-0
+}
+
+section.active .fanart {
+	@apply -z-10 fixed top-9 left-16 bottom-0 right-0 bg-background pointer-events-none
+}
+
+section.active .fanart img {
+	@apply object-cover opacity-30 w-full h-full  blur-lg
 }
 
 section.active .cover {
@@ -228,7 +232,7 @@ section.active.placed .fade {
 }
 
 section.active .infos {
-	@apply flex flex-col p-14
+	@apply flex flex-col p-14 pr-0
 }
 
 section.active .infos .details {
@@ -236,43 +240,75 @@ section.active .infos .details {
 }
 
 section.active .infos .details > * {
-	@apply mt-4
+	@apply mt-2
+}
+
+section.active .infos .title {
+	@apply text-2xl mt-5 font-bold
+}
+
+section.active .infos .details .buttons {
+	@apply flex flex-row gap-4 mt-5 items-center
+}
+
+section.active .infos .details .buttons svg {
+	@apply w-9 h-5 cursor-pointer transition-all opacity-30 hover:opacity-100 hover:shadow-xl
 }
 
 section.active .episodes {
-	@apply flex flex-col p-14 pl-0
+	@apply flex flex-col p-14 flex-grow overflow-y-auto h-full
 }
 
-/* BLUR COVER IMAGES INSTEAD OF FANART
-section.active .cover.placed + .content {
-	@apply opacity-100 bg-black;
-	--tw-bg-opacity: .3
+section.active .episode,
+section.active .season {
+	@apply flex w-full mt-2
 }
 
-section.active .content {
-	@apply transition-all duration-1000 p-10 absolute w-full h-full opacity-0 backdrop-blur-3xl;
-	--tw-backdrop-blur: blur(100px);
-} */
-
-section.active .fanart {
-	@apply absolute top-0 left-0 w-full h-full bg-background pointer-events-none -z-10
+section.active .season {
+	@apply sticky -top-14 z-10 shadow-md bg-background-dark backdrop-blur-xl;
+	--tw-bg-opacity: .7
 }
 
-section.active .fanart img {
-	@apply object-cover opacity-30 w-full h-full  blur-lg
+section.active .season button {
+	@apply items-center
 }
 
-section.active .content .title {
-	@apply text-2xl font-bold mb-3
+section.active .season h3 {
+	@apply mx-4 my-2 text-2xl font-black
 }
 
+section.active .episode {
+}
+
+section.active button {
+	@apply flex rounded-none items-center;
+	--tw-bg-opacity: .5
+}
+
+section.active button.disabled {
+	@apply opacity-50 cursor-default hover:bg-highlight-dark
+}
+
+section.active .episode .details {
+	@apply flex-grow text-left
+}
+
+section.active .episode .details .number {
+	@apply w-8
+}
+
+section.active .episode .details .title {
+	@apply flex-grow
+}
+
+section.active .episode .details.available.unmonitored .title {
+	@apply line-through
+}
 
 /* Context Buttons */
 
 section .poster .context {
-	@apply opacity-0 transition-all duration-300 pointer-events-none;
-	/* DEBUG */
-	/* opacity: 1; */
+	@apply opacity-0 transition-all duration-300 pointer-events-none
 }
 
 section .poster .context button {
@@ -280,7 +316,7 @@ section .poster .context button {
 }
 
 section .poster .context .monitored {
-	@apply bg-transparent absolute -top-2 right-2 p-0 text-3xl
+	@apply bg-transparent absolute -top-2 right-2 p-0 text-3xl shadow-none
 }
 
 section .poster .context .buttons {
@@ -388,4 +424,8 @@ select {
 
 .status svg {
 	@apply mr-1.5
+}
+
+.badge {
+	@apply bg-highlight-dark text-white font-bold py-1 px-2 mr-3 rounded-md shadow-xl text-xs
 }

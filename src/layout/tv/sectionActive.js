@@ -1,33 +1,31 @@
 import m from 'mithril'
+import { shell } from 'electron'
 import store from 'components/settings'
+import { icon } from '@fortawesome/fontawesome-svg-core'
 
 import { getPoster } from "components/posterFunctions"
-
-
-let seriesEpisodes = []
-let displayingSeason = []
+import { toggleMonitored, getFileSize } from 'components/functions'
+import { faSvgImdb, faSvgSonarr, faSvgTvdb, faSvgTvmaze } from '../../components/logos'
 let parentNode = null
 
 const sonarr = store.get('settings.sonarr')
+const lang = store.get('settings.general.language')
 const url = `http${sonarr.ssl ? 's' : ''}://${sonarr.url}:${sonarr.port}/`
+
+const faSvgMonitored = icon({ prefix: 'fas', iconName: 'bookmark' }).html[0]
+const faSvgUnmonitored = icon({ prefix: 'far', iconName: 'bookmark' }).html[0]
 
 export function sectionActive(series, section) {
 	parentNode = section
 
 	return {
-		oninit: () => {
-			fetchEpisodes(series.id, series.seasons.at(-1).seasonNumber)
-		},
         oncreate: () => {
+			window.onpopstate = function(event) {
+				closeSection(section)
+			}
             document.addEventListener('keydown', (e) => {
 				if (e.key === 'Escape') {
-					// displayingSeries = null
-					document.querySelector('.poster.active')?.classList?.remove('hide')
-					document.querySelector('.poster.active')?.classList?.remove('active')
-
-					section.classList.add('hidden')
-					section.classList.remove('placed')
-					m.mount(section, null)
+					closeSection(section)
 				} else {
                 	document.querySelector('input').focus()
 				}
@@ -44,9 +42,20 @@ export function sectionActive(series, section) {
 			        }),
 			        seriesInfo(series)
 			    ]),
-			    viewSeriesEpisodes()
+			    seriesEpisodes(series)
 			]
 		}
+	}
+}
+
+function closeSection(section) {
+	if (!parentNode.classList.contains('hidden')) {
+		document.querySelector('.poster.active')?.classList?.remove('hide')
+		document.querySelector('.poster.active')?.classList?.remove('active')
+
+		section.classList.add('hidden')
+		section.classList.remove('placed')
+		m.mount(section, null)
 	}
 }
 
@@ -60,10 +69,11 @@ function coverClickTransition(vnode) {
 	vnode.dom.style.width = sourceImg.width + 'px'
 	vnode.dom.style.height = sourceImg.height + 'px'
 
+	// 56 is the padding
+	parentNode.querySelector('.infos').style.width = sourceImg.width + 56 + 'px'
+
 	vnode.dom.style.transitionDuration = '0s'
 	vnode.dom.style.transform = 'translate(' + 
-		// (rect.left - 28 - document.querySelector('nav').clientWidth) + 'px, ' + 
-		// (rect.top  - 28 - document.querySelector('header').clientHeight) + 'px)'
 		(rect.left - 56 - document.querySelector('nav').clientWidth) + 'px, ' + 
 		(rect.top - 56 - document.querySelector('header').clientHeight) + 'px)'
 
@@ -79,34 +89,83 @@ function coverClickTransition(vnode) {
 }
 
 function seriesInfo(series) {
-	const seasons = [...series.seasons].reverse()
-	// displayingSeason = seriesEpisodes.filter(s => s.seasonNumber == seasons[0].seasonNumber)
-	
-	return m("div.fade", [
-		m("div.details", [
-			// m("p.details", getTvDetails(series).join(' · ')),
-			m("h2.title", series.title),
-			// m("div.context", getMovieContext(series))
-			m('select', {
-				onchange: (e) => {
-					displayingSeason = seriesEpisodes.filter(s => s.seasonNumber == e.target.value)
-				}
-			}, seasons.map((season) => {
-				return m('option', {
-					value: season.seasonNumber,
-				}, `Season ${season.seasonNumber}`)
-			}))
+	let year = `since ${series.year}`
+	if (series.status == 'ended') {
+		const lastEp = series.previousAiring ? new Date(series.previousAiring).getFullYear() : 'ended'
+		year = `${series.year} - ${lastEp}`
+	}
+
+	return m("div.details.fade", [
+		m("h2.title", series.title),
+		m("p.details", [
+			m("span", year),
+			series.runtime && m("span", `${series.runtime} min`),
+			series.network && m("span", `${series.network}`),
+			series.certification && m("span", `${series.certification}`),
+			m("span", `${series.genres.join(', ')}`)
+		]),
+		m("div.buttons", [
+			m("div.sonarr", {
+				onclick: () => shell.openExternal(`${url}series/${series.titleSlug}`)
+			}, [m.trust(faSvgSonarr)]),
+			series.imdbId && m("div.imdb", {
+				onclick: () => shell.openExternal(`https://www.imdb.com/title/${series.imdbId}`)
+			}, [m.trust(faSvgImdb)]),
+			series.tvdbId && m("div.tvdb", {
+				onclick: () => shell.openExternal(`https://thetvdb.com/?tab=series&id=${series.tvdbId}`)
+			}, [m.trust(faSvgTvdb)]),
+			series.tvMazeId && m("div.tvmaze", {
+				onclick: () => shell.openExternal(`https://www.tvmaze.com/shows/${series.tvMazeId}`)
+			}, [m.trust(faSvgTvmaze)])
 		])
 	])
 }
 
-function viewSeriesEpisodes() {
-	return m("div.episodes.fade", displayingSeason.map(function(episode) {
-		return m("div.episode", [
-			m("div.number", episode.episodeNumber),
-			m("div.title", episode.title)
-		])
-	}))
+function seriesEpisodes(series) {
+	console.log(series)
+
+    return m("div.episodes.fade", series.seasons.map(function(season) {
+        return [
+            m("div.season", [
+                m("button.monitored", {
+                    onclick: () => {
+						let api = `${url}api/v3/series/${series.id}?apikey=${sonarr.api}`
+						toggleMonitored(api, season.seasonNumber).then(() => {
+							season.monitored = !season.monitored
+							m.redraw()
+						})
+                    }
+                }, [m.trust(season.monitored ? faSvgMonitored : faSvgUnmonitored)]),
+                m("h3", season.seasonNumber === 0 ? 'Specials' : `Season ${season.seasonNumber}`)
+            ]),
+            m("div", !season.episodes ? null : season.episodes.map(function(episode) {
+				const file = episode.episodeFileId ? series.episodefiles.filter(f => f.id === episode.episodeFileId)[0] : null
+				const release = new Date(episode.airDate)
+
+                return m("div.episode", [
+                    m("button.monitored", {
+                        onclick: () => {
+							let api = `${url}api/v3/episode/${episode.id}?apikey=${sonarr.api}`
+							toggleMonitored(api).then(() => {
+								episode.monitored = !episode.monitored
+								m.redraw()
+							})
+                        }
+                    }, [m.trust(episode.monitored ? faSvgMonitored : faSvgUnmonitored)]),
+                    m("button.details", {
+                        class: (file ? 'available' : 'disabled') + (episode.monitored ? ' monitored' : ' unmonitored'),
+                        onclick: (e) => file?.path && shell.openPath(file.path)
+                    }, [
+                        m("div.number", episode.episodeNumber),
+                        m("div.title", episode.title),
+						file?.quality?.quality?.resolution && m("div.quality.badge", file.quality.quality.resolution + 'p'),
+						file?.size && m("div.size.badge", getFileSize(file.size)),
+                        episode.airDate && m("div.airdate", `${release.getDate()}. ${release.toLocaleString(lang, { month: 'short' })} ${release.getFullYear()}`)
+                    ])
+                ])
+            }))
+        ]
+    }))
 }
 
 function viewFanart(series) {
@@ -118,41 +177,6 @@ function viewFanart(series) {
 	}
 
 	return null
-}
-
-function fetchEpisodes(id, season) {
-    let episodes = []
-    let episodeFiles = []
-
-	m.request({
-		method: 'GET',
-		url: `${url}/api/v3/episode?seriesId=${id}&apikey=${sonarr.api}`,
-		background: true
-	})
-	.then(function(items) {
-		episodes = items
-
-		m.request({
-			method: 'GET',
-			url:`${url}/api/v3/episodefile?seriesId=${id}&apikey=${sonarr.api}`,
-			background: true
-		})
-		.then(function(items) {
-			episodeFiles = items
-
-			// console.log(seriesEpisodes)
-			// console.log(seriesEpisodeFiles)
-			// seriesEpisodes = seriesEpisodes.map(function(episode) {
-			// 	episode.episodeFile = seriesEpisodeFiles.filter(function(episodeFile) {
-			// 		return episodeFile.episodeId === episode.id
-			// 	})[0]
-			// 	return episode
-			// })
-			seriesEpisodes = episodes
-			displayingSeason = seriesEpisodes.filter(s => s.seasonNumber == season)
-			m.redraw()
-		})
-	})
 }
 
 export default sectionActive

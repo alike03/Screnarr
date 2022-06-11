@@ -2,6 +2,7 @@ import m from 'mithril'
 import { shell } from 'electron'
 import { icon } from '@fortawesome/fontawesome-svg-core'
 
+import { toggleMonitored } from 'components/functions'
 import { getMovieRating } from './getMovieRating'
 import { getMovieState } from './functions'
 import store from 'components/settings'
@@ -70,27 +71,11 @@ export function getMovieContext(movie) {
 					const parent = e.target.closest('.poster')
 					const movieId = movie.id
 					const radarr = store.get('settings.radarr')
-					const url = `http${radarr.ssl ? 's' : ''}://${radarr.url}:${radarr.port}/api/v3/movie/${movieId}?apikey=${radarr.api}`
+					let api = `http${radarr.ssl ? 's' : ''}://${radarr.url}:${radarr.port}/api/v3/movie/${movieId}?apikey=${radarr.api}`
 
-					// Get Movie replace the part of the object that is changed and send it back to the server
-					fetch(url, {
-						method: 'GET',
-						headers: {
-							'accept': 'application/json',
-							'Content-Type': 'application/json'
-						}
-					}).then(response => response.json()).then(data => {
-						data.monitored = !movie.monitored
-						fetch(url, {
-							method: 'PUT',
-							headers: {
-								'Content-Type': 'application/json'
-							},
-							body: JSON.stringify(data)
-						}).then(() => {
-							movie.monitored = !movie.monitored
-							parent.className = 'poster hidden ' + getMovieState(movie).join(' ')
-						})
+					toggleMonitored(api).then(() => {
+						movie.monitored = !movie.monitored
+						parent.className = 'poster hidden ' + getMovieState(movie).join(' ')
 					})
 				}
 			}, [ m.trust(movie.monitored ? faSvgMonitored : faSvgUnmonitored) ])
