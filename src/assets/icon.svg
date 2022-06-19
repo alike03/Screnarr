@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="100%"
+	height="100%" viewBox="0 0 624 624" version="1.1" xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
+	style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+	<g id="icon">
+		<path id="outer"
+			d="M312,32c-154.64,0 -280,125.36 -280,280c0,154.536 125.464,280 280,280c154.64,0 280,-125.36 280,-280c0,154.64 -125.36,280 -280,280c-154.536,0 -280,-125.464 -280,-280c0,-154.64 125.36,-280 280,-280Z"
+			style="fill:none;stroke:#007ea7;stroke-width:64px;" />
+		<path id="inner"
+			d="M312,155c-86.709,0 -157,70.291 -157,157c0,86.651 70.349,157 157,157c86.709,-0 157,-70.291 157,-157c-0,86.709 -70.291,157 -157,157c-86.651,-0 -157,-70.349 -157,-157c0,-86.709 70.291,-157 157,-157Z"
+			style="fill:none;stroke:#007ea7;stroke-width:64px;" />
+		<g>
+			<circle cx="312" cy="312" r="62.4" style="fill:#007ea7;" />
+			<path d="M312,312l280,0l-280,0Z" style="fill:none;stroke:#007ea7;stroke-width:64px;" />
+		</g>
+	</g>
+</svg>

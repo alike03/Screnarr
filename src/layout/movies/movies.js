@@ -16,7 +16,7 @@ export default function LayoutMovie() {
     return {
         oninit: movieFetch,
         oncreate: (vnode) => {
-            document.addEventListener('keypress', (e) => {
+            document.addEventListener('keypress', () => {
                 vnode.dom.querySelector('input').focus()
             })
         },
@@ -26,7 +26,7 @@ export default function LayoutMovie() {
                         return m("button", {
                             'data-filter': f.filter,
                             'oncreate': () => {
-                                const filter = store.get('settings.movies.filter')
+                                const filter = store.get('settings.radarr.filter')
                                 document.querySelector(`[data-filter="${filter}"]`).classList.add('active')
 
                                 waitForElement('section.movies .poster').then(() => {
@@ -39,7 +39,7 @@ export default function LayoutMovie() {
                             },
                             'onclick': (e) => {
                                 const filter = e.target.dataset.filter
-                                store.set('settings.movies.filter', filter)
+                                store.set('settings.radarr.filter', filter)
                                 e.target.parentNode.childNodes.forEach(n => {
                                     n.classList.remove('active')
                                 })

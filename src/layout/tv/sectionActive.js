@@ -3,10 +3,12 @@ import { shell } from 'electron'
 import store from 'components/settings'
 import { icon } from '@fortawesome/fontawesome-svg-core'
 
-import { getPoster } from "components/posterFunctions"
-import { toggleMonitored, getFileSize } from 'components/functions'
+import { getPoster } from "../../components/posterFunctions"
+import { toggleMonitored, getFileSize } from '../../components/functions'
 import { faSvgImdb, faSvgSonarr, faSvgTvdb, faSvgTvmaze } from '../../components/logos'
+
 let parentNode = null
+let latest = null
 
 const sonarr = store.get('settings.sonarr')
 const lang = store.get('settings.general.language')
@@ -17,6 +19,7 @@ const faSvgUnmonitored = icon({ prefix: 'far', iconName: 'bookmark' }).html[0]
 
 export function sectionActive(series, section) {
 	parentNode = section
+	latest = null
 
 	return {
         oncreate: () => {
@@ -26,8 +29,6 @@ export function sectionActive(series, section) {
             document.addEventListener('keydown', (e) => {
 				if (e.key === 'Escape') {
 					closeSection(section)
-				} else {
-                	document.querySelector('input').focus()
 				}
             })
         },
@@ -97,6 +98,12 @@ function seriesInfo(series) {
 
 	return m("div.details.fade", [
 		m("h2.title", series.title),
+		m("button.justify-center", {
+			onclick: () => {
+				// shell.openPath(latest.path)
+				console.log(latest.path)
+			}
+		}, "Watch the latest"),
 		m("p.details", [
 			m("span", year),
 			series.runtime && m("span", `${series.runtime} min`),
@@ -122,32 +129,34 @@ function seriesInfo(series) {
 }
 
 function seriesEpisodes(series) {
-	console.log(series)
-
     return m("div.episodes.fade", series.seasons.map(function(season) {
         return [
             m("div.season", [
                 m("button.monitored", {
                     onclick: () => {
 						let api = `${url}api/v3/series/${series.id}?apikey=${sonarr.api}`
-						toggleMonitored(api, season.seasonNumber).then(() => {
-							season.monitored = !season.monitored
+						toggleMonitored(api, season.seasonNumber).then(monitored => {
+							season.monitored = monitored
 							m.redraw()
 						})
                     }
                 }, [m.trust(season.monitored ? faSvgMonitored : faSvgUnmonitored)]),
-                m("h3", season.seasonNumber === 0 ? 'Specials' : `Season ${season.seasonNumber}`)
+                m('div.info', [
+					m("h3", season.seasonNumber === 0 ? 'Specials' : `Season ${season.seasonNumber}`),
+					getSeasonStatus(season)
+				])
             ]),
             m("div", !season.episodes ? null : season.episodes.map(function(episode) {
 				const file = episode.episodeFileId ? series.episodefiles.filter(f => f.id === episode.episodeFileId)[0] : null
 				const release = new Date(episode.airDate)
+				if (latest === null && episode.monitored) latest = file
 
                 return m("div.episode", [
                     m("button.monitored", {
                         onclick: () => {
 							let api = `${url}api/v3/episode/${episode.id}?apikey=${sonarr.api}`
-							toggleMonitored(api).then(() => {
-								episode.monitored = !episode.monitored
+							toggleMonitored(api).then(monitored => {
+								episode.monitored = monitored
 								m.redraw()
 							})
                         }
@@ -166,6 +175,17 @@ function seriesEpisodes(series) {
             }))
         ]
     }))
+}
+
+function getSeasonStatus(season) {
+	// const episdoeCount = series.seasons.statistics.totalEpisodeCount
+	const episodeCount = season.statistics.monitored
+	const availibleCount = season.statistics.episodeFileCount
+
+	const colors = ['#f44336', '#ff9800', '#4caf50']
+	const color = episodeCount === availibleCount || episodeCount < availibleCount ? colors[2] : episodeCount > 0 ? colors[1] : colors[0]
+
+	return availibleCount > 0 && m("div.size.badge", {style: `background-color: ${color}`}, `${availibleCount}/${episodeCount}`)
 }
 
 function viewFanart(series) {

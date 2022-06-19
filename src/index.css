@@ -159,7 +159,16 @@ section .poster:hover img {
 	@apply shadow-blue-600/10
 }
 
-section .content {
+section .poster .count {
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
+	@apply absolute top-3 right-3 w-8 h-8 bg-background border-highlight-light rounded-full text-center transition-all opacity-25 box-border flex items-center justify-center
+}
+
+section .poster:hover .count {
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 1), 0 0 0 3px rgb(0 0 0);
+	@apply top-2 right-2 w-10 h-10 text-2xl border-2 text-white font-bold opacity-100;
+    /* --tw-border-opacity: .7; */
+    --tw-bg-opacity: .7;
 }
 
 section .poster .content .title {
@@ -200,7 +209,7 @@ section.tv .poster.active.hide {
 }
 
 section.active {
-	@apply  z-10 fixed top-9 left-16 bottom-0 right-0
+	@apply  z-10 fixed top-9 left-16 bottom-0 right-0 flex-nowrap
 }
 
 section.active .fanart {
@@ -273,6 +282,10 @@ section.active .season button {
 	@apply items-center
 }
 
+section.active .season .info {
+	@apply flex flex-grow items-center justify-between
+}
+
 section.active .season h3 {
 	@apply mx-4 my-2 text-2xl font-black
 }
@@ -293,12 +306,16 @@ section.active .episode .details {
 	@apply flex-grow text-left
 }
 
+section.active .episode .details > * {
+	@apply whitespace-nowrap
+}
+
 section.active .episode .details .number {
 	@apply w-8
 }
 
 section.active .episode .details .title {
-	@apply flex-grow
+	@apply flex-grow mr-5 whitespace-normal
 }
 
 section.active .episode .details.available.unmonitored .title {

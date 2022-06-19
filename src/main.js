@@ -1,5 +1,5 @@
 const { app, BrowserWindow, protocol, ipcMain } = require('electron')
-const { getWindowSettings, setWindowSettings } = require('./electron/settings')
+const { getWindowSettings, setWindowSettings } = require('./vendor/electron')
 // const path = require('path')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -29,6 +29,7 @@ const createWindow = () => {
 		frame: false,
 		backgroundColor: '#fff',
 		autoHideMenuBar: true,
+		icon: 'src/assets/icon@4x.png',
     });
 
 	// if (windowSettings.fullscreen) mainWindow.setFullScreen(true)

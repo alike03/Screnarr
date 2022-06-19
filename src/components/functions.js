@@ -1,24 +1,34 @@
 export async function toggleMonitored(url, seasonNumber = null) {
-	await fetch(url, {
+	const loadData = await fetch(url, {
 		method: 'GET',
 		headers: {
 			'accept': 'application/json',
 			'Content-Type': 'application/json'
 		}
-	}).then(response => response.json()).then(data => {
-		if (seasonNumber) {
-			data.seasons.filter(s => s.seasonNumber === seasonNumber)[0].monitored = !data.seasons.filter(s => s.seasonNumber === seasonNumber)[0].monitored
-		} else {
-			data.monitored = !data.monitored
-		}
-		fetch(url, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		})
 	})
+
+	const loadDataJson = await loadData.json()
+	if (seasonNumber) {
+		loadDataJson.seasons.filter(s => s.seasonNumber === seasonNumber)[0].monitored = !loadDataJson.seasons.filter(s => s.seasonNumber === seasonNumber)[0].monitored
+	} else {
+		loadDataJson.monitored = !loadDataJson.monitored
+	}
+
+	const putData = await fetch(url, {
+		method: 'PUT',
+		headers: {
+			'accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(loadDataJson)
+	})
+
+	const putDataJson = await putData.json()
+
+	if (seasonNumber) {
+		return putDataJson.seasons.filter(s => s.seasonNumber === seasonNumber)[0].monitored
+	}
+	return putDataJson.monitored
 }
 
 export function getFileSize(bytes) {

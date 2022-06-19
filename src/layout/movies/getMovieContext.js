@@ -73,9 +73,10 @@ export function getMovieContext(movie) {
 					const radarr = store.get('settings.radarr')
 					let api = `http${radarr.ssl ? 's' : ''}://${radarr.url}:${radarr.port}/api/v3/movie/${movieId}?apikey=${radarr.api}`
 
-					toggleMonitored(api).then(() => {
-						movie.monitored = !movie.monitored
+					toggleMonitored(api).then((monitored) => {
+						movie.monitored = monitored
 						parent.className = 'poster hidden ' + getMovieState(movie).join(' ')
+						m.redraw()
 					})
 				}
 			}, [ m.trust(movie.monitored ? faSvgMonitored : faSvgUnmonitored) ])
