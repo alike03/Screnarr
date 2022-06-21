@@ -1,6 +1,6 @@
 {
 	"name": "screnarr",
-	"productName": "screnarr",
+	"productName": "Screnarr",
 	"version": "1.0.0",
 	"description": "Screnarr is a media management tool for Sonarr and Sonarr.",
 	"main": ".webpack/main",
@@ -18,7 +18,9 @@
 	"license": "MIT",
 	"config": {
 		"forge": {
-			"packagerConfig": {},
+			"packagerConfig": {
+				"icon": "./src/assets/icon.ico"
+			},
 			"makers": [
 				{
 					"name": "@electron-forge/maker-squirrel",

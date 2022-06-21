@@ -100,10 +100,14 @@ function seriesInfo(series) {
 		m("h2.title", series.title),
 		m("button.justify-center", {
 			onclick: () => {
-				// shell.openPath(latest.path)
-				console.log(latest.path)
+				shell.openPath(latest.path)
 			}
-		}, "Watch the latest"),
+		}, "Watch Latest Episode"),
+		m("button.justify-center", {
+			onclick: () => {
+				shell.openPath(series.path)
+			}
+		}, "Open Folder"),
 		m("p.details", [
 			m("span", year),
 			series.runtime && m("span", `${series.runtime} min`),
@@ -149,7 +153,7 @@ function seriesEpisodes(series) {
             m("div", !season.episodes ? null : season.episodes.map(function(episode) {
 				const file = episode.episodeFileId ? series.episodefiles.filter(f => f.id === episode.episodeFileId)[0] : null
 				const release = new Date(episode.airDate)
-				if (latest === null && episode.monitored) latest = file
+				if (file && episode.monitored) latest = file
 
                 return m("div.episode", [
                     m("button.monitored", {

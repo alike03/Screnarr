@@ -241,7 +241,7 @@ section.active.placed .fade {
 }
 
 section.active .infos {
-	@apply flex flex-col p-14 pr-0
+	@apply flex flex-col p-14 pr-0 flex-grow-0 flex-shrink-0
 }
 
 section.active .infos .details {
@@ -250,6 +250,10 @@ section.active .infos .details {
 
 section.active .infos .details > * {
 	@apply mt-2
+}
+
+section.active .infos button {
+	@apply text-sm
 }
 
 section.active .infos .title {
