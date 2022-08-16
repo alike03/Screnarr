@@ -69,6 +69,10 @@ button > * {
 	@apply flex items-center h-full
 }
 
+.title-bar .title-bar-btns button {
+	@apply shadow-none
+}
+
 .title-bar button {
 	@apply bg-transparent hover:bg-background-dark rounded-none p-0 h-full aspect-square
 }
@@ -213,11 +217,11 @@ section.tv .poster.active.hide {
 }
 
 section.active {
-	@apply  z-10 fixed top-9 left-16 bottom-0 right-0 flex-nowrap
+	@apply  z-10 fixed top-0 left-16 bottom-0 right-0 flex-nowrap
 }
 
 section.active .fanart {
-	@apply -z-10 fixed top-9 left-16 bottom-0 right-0 bg-background pointer-events-none
+	@apply -z-10 fixed top-0 left-16 bottom-0 right-0 bg-background pointer-events-none
 }
 
 section.active .fanart img {
@@ -282,7 +286,7 @@ section.active .season {
 }
 
 section.active .season {
-	@apply sticky -top-14 z-10 shadow-md bg-background-dark backdrop-blur-xl;
+	@apply sticky -top-5 z-10 shadow-md bg-background-dark backdrop-blur-xl;
 	--tw-bg-opacity: .7
 }
 

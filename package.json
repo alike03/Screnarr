@@ -2,7 +2,7 @@
 	"name": "screnarr",
 	"productName": "Screnarr",
 	"version": "1.0.0",
-	"description": "Screnarr is a media management tool for Sonarr and Sonarr.",
+	"description": "Screnarr is a media management tool for Sonarr and Radarr.",
 	"main": ".webpack/main",
 	"scripts": {
 		"start": "electron-forge start",
