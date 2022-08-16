@@ -13,6 +13,7 @@ const createWindow = () => {
 	const windowSettings = getWindowSettings()
     // Create the browser window.
     const mainWindow = new BrowserWindow({
+		show: false,
 		title: 'Screnarr',
 		x: windowSettings.x,
 		y: windowSettings.y,
@@ -41,6 +42,11 @@ const createWindow = () => {
     // and load the index.html of the app.
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 	mainWindow.setMenu(null);
+
+	// Wait until the window is ready to show
+	mainWindow.once('ready-to-show', () => {
+		mainWindow.show()
+	})
 
     // Open the DevTools only if it is not a build (production)
 	if (!app.isPackaged) {

@@ -10,7 +10,8 @@ body {
 	/* height: calc(100vh - 36px); */
 	display: grid;
 	grid-template-columns: 64px 1fr;
-	grid-template-rows: 36px calc(100vh - 36px);
+	/* grid-template-rows: 36px calc(100vh - 36px); */
+	grid-template-rows: 0 1fr;
 	grid-template-areas: 
 		"header header"
 		"nav content"; 
@@ -53,12 +54,15 @@ button > * {
 .title-bar {
 	grid-area: header;
 	z-index: 1000;
-	@apply flex items-center bg-background-dark
+}
+
+.title-bar .title-container {
+	@apply absolute top-0 w-full h-9 flex
 }
 
 .title-bar .title {
 	-webkit-app-region: drag;
-	@apply text-white font-bold text-base m-0 ml-2.5 flex-grow
+	@apply w-full h-6 ml-16
 }
 
 .title-bar .title-bar-btns {
@@ -66,11 +70,11 @@ button > * {
 }
 
 .title-bar button {
-	@apply bg-background-dark hover:bg-gray-900 rounded-none p-0 h-full aspect-square
+	@apply bg-transparent hover:bg-background-dark rounded-none p-0 h-full aspect-square
 }
 
 .title-bar button.close-btn {
-	@apply hover:bg-red-700
+	@apply hover:bg-red-700 mr-3
 }
 
 /* Navigation */
@@ -133,11 +137,11 @@ section.filter button {
 }
 
 section.filter input.search {
-	@apply transition-all duration-300 opacity-0
+	@apply transition-all duration-300 opacity-0 pointer-events-none
 }
 
 section.filter input.search.active {
-	@apply grow opacity-100
+	@apply grow opacity-100 pointer-events-auto
 }
 
 /* Posters */

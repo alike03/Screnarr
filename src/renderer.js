@@ -1,4 +1,5 @@
 import m from 'mithril'
+import { remote } from 'electron'
 import store from './components/settings'
 
 import '@fontsource/voces'

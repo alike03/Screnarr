@@ -78,6 +78,15 @@ export function getMovieContext(movie) {
 						parent.className = 'poster hidden ' + getMovieState(movie).join(' ')
 						m.redraw()
 					})
+
+					if (store.get('settings.general.ytReviewOpen')) {
+						const movieTitle = movie.title.replace(/\s/g, '%20')
+						const ytReview = store.get('settings.general.ytReview')
+						ytReview.forEach(channel => {
+							const path = `https://www.youtube.com/${channel}/search?query=${movieTitle}`
+							shell.openExternal(path)
+						})
+					}
 				}
 			}, [ m.trust(movie.monitored ? faSvgMonitored : faSvgUnmonitored) ])
 	]
